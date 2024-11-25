@@ -1,4 +1,3 @@
-#!/bin/bash
 
 # Step 1: Create an EC2 Instance
 # 1. Log in to AWS Management Console and launch an EC2 instance with Ubuntu.
