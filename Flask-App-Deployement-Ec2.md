@@ -1,61 +1,37 @@
-# Deploy Flask App on AWS EC2 with Nginx and Gunicorn
+# Flask App Deployment on AWS EC2
 
-```bash
-# Install Required Packages
-sudo apt update && sudo apt upgrade -y
-sudo apt install python3 python3-pip python3-venv -y
-sudo apt install nginx -y
+This tutorial guides you through the process of deploying a Flask application on an AWS EC2 instance. 
 
-# Set Up Flask Application
-git clone https://github.com/your-repo/flask-app.git
-cd flask-app
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
+## Prerequisites
 
-# Install Gunicorn
-pip install gunicorn
-gunicorn --bind 0.0.0.0:8000 wsgi:app
+1. **AWS Account**: Make sure you have an active AWS account.
+2. **AWS EC2 Instance**: You need to create an EC2 instance (Ubuntu) with SSH, HTTP, and HTTPS access.
+3. **Flask App**: Ensure your Flask app is working well locally before proceeding.
 
-# Configure Nginx
-sudo nano /etc/nginx/sites-available/flask-app
-server {
-    listen 80;
-    server_name your-domain.com;
+## Step 1: Create an EC2 Instance
 
-    location / {
-        proxy_pass http://127.0.0.1:8000;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-    }
+1. Log in to your [AWS Management Console](https://aws.amazon.com/console/).
+2. Go to the **EC2 Dashboard** and click on **Launch Instance**.
+3. Choose **Ubuntu Server** as your OS.
+4. Select an instance type (e.g., `t2.micro` for free tier).
+5. Configure security groups:
+   - Allow **HTTP** (port 80)
+   - Allow **HTTPS** (port 443)
+   - Allow **SSH** (port 22)
+6. Launch the instance and download the SSH key pair (`.pem` file).
 
-    location /static/ {
-        alias /path-to-your-app/static/;
-    }
-}
+## Step 2: Test Flask App Locally
 
-[Unit]
-Description=Gunicorn instance to serve Flask App
-After=network.target
+1. Make sure your Flask app is running locally without errors.
+   - Navigate to the folder containing your Flask app and test it by running:
+     ```bash
+     python app.py
+     ```
+   - Open `http://127.0.0.1:5000/` in your browser to verify the app works.
 
-[Service]
-User=ubuntu
-Group=www-data
-WorkingDirectory=/path-to-your-app
-Environment="PATH=/path-to-your-app/venv/bin"
-ExecStart=/path-to-your-app/venv/bin/gunicorn --workers 3 --bind unix:flask-app.sock -m 007 wsgi:app
+2. **Clean Up**: Delete unnecessary modules and any virtual environments (optional but recommended):
+   - Remove the virtual environment folder and unused dependencies.
 
-[Install]
-WantedBy=multi-user.target
-sudo apt install certbot python3-certbot-nginx -y
-sudo certbot --nginx -d your-domain.com
-# Check Gunicorn logs
-sudo journalctl -u flask-app
-
-# Check Nginx logs
-sudo tail -f /var/log/nginx/error.log
-
-
-Just copy-paste the above content into your `README.md` file. You can replace the placeholders (`your-repo`, `your-domain.com`, `/path-to-your-app`, etc.) with actual values as needed.
+3. **Dependencies**: Create a `requirements.txt` file with all the dependencies needed to run the app:
+   ```bash
+   pip freeze > requirements.txt
