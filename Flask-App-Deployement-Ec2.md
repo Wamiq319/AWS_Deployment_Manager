@@ -42,19 +42,19 @@ ssh -i ~/Downloads/AWS/your_key_pair.pem ubuntu@your_ec2_public_ip
 ```bash
 cd flask-app
 ```
-# Create a virtual environment:
+ Create a virtual environment:
 ```bash
 python3 -m venv venv
 ```
-# Activate the virtual environment:
+ Activate the virtual environment:
 ```bash
 source venv/bin/activate
 ```
 
-# Install dependencies from requirements.txt:
+Install dependencies from requirements.txt:
 pip install -r requirements.txt
 
-# Run  and test the Flask app:
+Run  and test the Flask app:
 ```bash
 python app.py
 curl http://your_ec2_public_ip:5000
@@ -62,7 +62,7 @@ e.g http://2-3-7-185-177:5000
 ```
 Press ctrl+ c to quit the app 
 #MAKE SURE YOU ARE IN VIRTUAL ENVIROMENT YOU CAN ALSO INSTALL THESE IN UBUNTU MACHINE
-#Step7:Run Gunicorn WSGI server to serve the Flask Application
+Step7:Run Gunicorn WSGI server to serve the Flask Application
 When you “run” flask, you are actually running Werkzeug’s development WSGI server, which forward requests from a web server.
 Since Werkzeug is only for development, we have to use Gunicorn, which is a production-ready WSGI server, to serve our application.
 
