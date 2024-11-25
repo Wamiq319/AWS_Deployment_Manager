@@ -35,3 +35,15 @@ This tutorial guides you through the process of deploying a Flask application on
 3. **Dependencies**: Create a `requirements.txt` file with all the dependencies needed to run the app:
    ```bash
    pip freeze > requirements.txt
+4 Create a Aws folder in dowload (just for oragnization of the process) place the .pem ssh key and also the the folder with all the app files suppose app name is flask-app.Now ssh in you instance using 
+   ```bash
+  ssh-dhhd
+5 upadte once sh you will see some thhing like this
+ [img src="media/ssh-image.jpg"]
+6 update the server with command
+''bash
+7  now close ssh connection using ctrl+D
+8 now move all the files to server using
+""ssh
+ scp -i your_key_pair.pem -r your_local_directory_path user@your_ec2_public_ip:/path/on/ec2/instance
+e.g
