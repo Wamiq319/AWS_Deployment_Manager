@@ -1,49 +1,58 @@
-# Flask App Deployment on AWS EC2
+#!/bin/bash
 
-This tutorial guides you through the process of deploying a Flask application on an AWS EC2 instance. 
+# Step 1: Create an EC2 Instance
+# 1. Log in to AWS Management Console and launch an EC2 instance with Ubuntu.
+# 2. Configure security groups: HTTP (port 80), HTTPS (port 443), and SSH (port 22).
+# 3. Download the SSH key pair (your_key_pair.pem).
 
-## Prerequisites
+# Step 2: Test Flask App Locally
+# 1. Navigate to your Flask app directory and test it locally:
+cd /path/to/your/flask-app
+python app.py
+# Open http://127.0.0.1:5000/ in your browser to ensure the app is running correctly.
 
-1. **AWS Account**: Make sure you have an active AWS account.
-2. **AWS EC2 Instance**: You need to create an EC2 instance (Ubuntu) with SSH, HTTP, and HTTPS access.
-3. **Flask App**: Ensure your Flask app is working well locally before proceeding.
+# 2. Clean Up (optional):
+# Remove virtual environment folder and unnecessary dependencies if any:
+rm -rf venv
 
-## Step 1: Create an EC2 Instance
+# 3. Generate requirements.txt
+pip freeze > requirements.txt
 
-1. Log in to your [AWS Management Console](https://aws.amazon.com/console/).
-2. Go to the **EC2 Dashboard** and click on **Launch Instance**.
-3. Choose **Ubuntu Server** as your OS.
-4. Select an instance type (e.g., `t2.micro` for free tier).
-5. Configure security groups:
-   - Allow **HTTP** (port 80)
-   - Allow **HTTPS** (port 443)
-   - Allow **SSH** (port 22)
-6. Launch the instance and download the SSH key pair (`.pem` file).
+# Step 3: Organize Files for Transfer
+# Create an 'AWS' folder in your Downloads directory and move your Flask app and .pem SSH key into it:
+mkdir ~/Downloads/AWS
+mv ~/path/to/your/flask-app ~/Downloads/AWS/
+mv ~/path/to/your_key_pair.pem ~/Downloads/AWS/
 
-## Step 2: Test Flask App Locally
+# Step 4: Connect to EC2 via SSH
+# Connect to your EC2 instance using SSH:
+ssh -i ~/Downloads/AWS/your_key_pair.pem ubuntu@your_ec2_public_ip
 
-1. Make sure your Flask app is running locally without errors.
-   - Navigate to the folder containing your Flask app and test it by running:
-     ```bash
-     python app.py
-     ```
-   - Open `http://127.0.0.1:5000/` in your browser to verify the app works.
+# Update the server:
+sudo apt update && sudo apt upgrade -y
 
-2. **Clean Up**: Delete unnecessary modules and any virtual environments (optional but recommended):
-   - Remove the virtual environment folder and unused dependencies.
+# Exit the SSH session:
+exit
 
-3. **Dependencies**: Create a `requirements.txt` file with all the dependencies needed to run the app:
-   ```bash
-   pip freeze > requirements.txt
-4 Create a Aws folder in dowload (just for oragnization of the process) place the .pem ssh key and also the the folder with all the app files suppose app name is flask-app.Now ssh in you instance using 
-   ```bash
-  ssh-dhhd
-5 upadte once sh you will see some thhing like this
- [img src="media/ssh-image.jpg"]
-6 update the server with command
-''bash
-7  now close ssh connection using ctrl+D
-8 now move all the files to server using
-""ssh
- scp -i your_key_pair.pem -r your_local_directory_path user@your_ec2_public_ip:/path/on/ec2/instance
-e.g
+# Step 5: Transfer Flask App to EC2 Instance
+# Use SCP to copy your Flask app to the EC2 instance:
+scp -i ~/Downloads/AWS/your_key_pair.pem -r ~/Downloads/AWS/flask-app ubuntu@your_ec2_public_ip:/home/ubuntu/
+
+# Step 6: Set Up Flask App on EC2
+# SSH back into your EC2 instance:
+ssh -i ~/Downloads/AWS/your_key_pair.pem ubuntu@your_ec2_public_ip
+
+# Navigate to the Flask app directory:
+cd flask-app
+
+# Create a virtual environment:
+python3 -m venv venv
+
+# Activate the virtual environment:
+source venv/bin/activate
+
+# Install dependencies from requirements.txt:
+pip install -r requirements.txt
+
+# Run the Flask app:
+python app.py
