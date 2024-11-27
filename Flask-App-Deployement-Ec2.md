@@ -19,9 +19,11 @@ Connect to your EC2 instance using SSH:
 ```bash
 ssh -i ~/Downloads/AWS/your_key_pair.pem ubuntu@your_ec2_public_ip
 ```
-Update the server:
+Update the server install python and virual enviroment:
 ```bash
-sudo apt update && sudo apt upgrade -y
+sudo apt-get update
+sudo apt install python3 python3-pip -y
+sudo apt-get install python3-venv
 ```
 Exit the SSH session:
 exit
