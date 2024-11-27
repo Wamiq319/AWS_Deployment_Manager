@@ -42,7 +42,7 @@ ssh -i ~/Downloads/AWS/your_key_pair.pem ubuntu@your_ec2_public_ip
 ```bash
 cd flask-app
 ```
- Create a virtual environment:
+ Create a virtual environment:(Don't use .venv foldername or starting with . other wise it will not create virtual enviroment in ubuntu)
 ```bash
 python3 -m venv venv
 ```
