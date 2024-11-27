@@ -31,7 +31,7 @@ Step 4: Transfer Flask App to EC2 Instance
 2Use SCP to copy your Flask app to the EC2 instance:
 ```bash
 scp -i ~/Downloads/AWS/your_key_pair.pem -r ~/Downloads/AWS/flask-app ubuntu@your_ec2_public_ip:/home/ubuntu/
-e.g scp -i flask-app.pem -r aws ubuntu@ec2-3-7-185-177.ap-south.compute.amazonaws.com:/ubuntu/home/Flask-app
+e.g scp -i Flask_App_Key.pem -r Trading-App ubuntu@ec2-98-184-75-84.eu-west-2.compute.amazonaws.com:/home/ubuntu/Flask-app
 ```
 Step 6: Set Up Flask App on EC2
 1 SSH back into your EC2 instance:
