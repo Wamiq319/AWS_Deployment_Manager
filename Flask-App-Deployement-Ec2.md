@@ -89,7 +89,7 @@ Install — tells systemd at which moment during boot process this service shoul
 With that said, create an unit file in the /etc/systemd/system directory
 	
 ```bash
-sudo nano /etc/systemd/system/FLASK-APP.service
+sudo vi /etc/systemd/system/FLASK-APP.service
 ```
 Then add this into the file.
 ```bash
@@ -129,7 +129,7 @@ sudo systemctl enable nginx
 ```
 Edit the default file in the sites-available folder.
 ```bash
-sudo nano /etc/nginx/sites-available/default
+sudo vi /etc/nginx/sites-available/default
 ```
 Add the following code at the top of the file (below the default comments)
 ```bash
